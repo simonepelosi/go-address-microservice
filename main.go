@@ -1,10 +1,10 @@
 package main
 
 import (
-	"github.com/labstack/echo/v4"
+	"go-address-microservice/router"
 )
 
 func main() {
-	e := echo.New()
+	e := router.New()
 	e.Logger.Fatal(e.Start(":8000"))
 }

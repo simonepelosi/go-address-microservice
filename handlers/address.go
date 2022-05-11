@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"go-address-microservice/models"
+	"go-address-microservice/utils"
 	"log"
 	"net/http"
 
@@ -17,5 +18,8 @@ func CheckAddresses(c echo.Context) (err error) {
 		return echo.NewHTTPError(http.StatusInternalServerError, err.Error)
 	}
 
-	return c.JSON(http.StatusOK, "test")
+	log.Printf("addresses  to check: %s", addresses.AddressesList)
+
+	utils.GeocodeAddress(addresses.AddressesList[0])
+	return c.JSON(http.StatusOK, addresses)
 }
