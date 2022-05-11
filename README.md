@@ -2,10 +2,7 @@
 
 ## API Documentation
 
-### 1.1 GET JWT TOKEN
-Body form fields are:
-- email (required): string 
-- password (required): string
+### 1.1 GET CLOSEST ADDRESSES
 ```bash
 curl --location --request POST 'http://localhost:8000/check-closest' \
 --header 'Content-Type: application/json' \
@@ -26,4 +23,10 @@ curl --location --request POST 'http://localhost:8000/check-closest' \
     },
     "DistanceInKm": 85
 }
+```
+
+## RUN TESTS
+Move into handlers folder and type:
+```bash
+go test
 ```
