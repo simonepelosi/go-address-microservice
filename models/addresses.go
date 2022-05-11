@@ -121,5 +121,5 @@ func Distance(lat1, lon1, lat2, lon2 float64) float64 {
 	// calculate
 	h := Hsin(la2-la1) + math.Cos(la1)*math.Cos(la2)*Hsin(lo2-lo1)
 
-	return 2 * r * math.Asin(math.Sqrt(h))
+	return math.Round(2 * r * math.Asin(math.Sqrt(h)) / 1000)
 }

@@ -13,7 +13,7 @@ import (
 var (
 	addressesJSON    = []byte(`{ "addresses": [ "Via di S. Basilio, 15, 00187 Roma RM, Italy", "Via Forestella, 13, 03026 Pofi FR, Italy", "Address C", "Address D"]}`)
 	addressesBADJSON = []byte(`{ "addresses": []}`)
-	resultOK         = "{\"FirstAddress\":{\"Name\":\"Via di S. Basilio, 15, 00187 Roma RM, Italy\",\"Lat\":41.9053319,\"Lng\":12.489857},\"SecondAddress\":{\"Name\":\"Via Forestella, 13, 03026 Pofi FR, Italy\",\"Lat\":41.5532695,\"Lng\":13.4022403},\"Distance\":85329.84963762702}\n"
+	resultOK         = "{\"AddressOne\":{\"Name\":\"Via di S. Basilio, 15, 00187 Roma RM, Italy\",\"Lat\":41.9053319,\"Lng\":12.489857},\"AddressTwo\":{\"Name\":\"Via Forestella, 13, 03026 Pofi FR, Italy\",\"Lat\":41.5532695,\"Lng\":13.4022403},\"DistanceInKm\":85}\n"
 )
 
 func TestGetClosest(t *testing.T) {
