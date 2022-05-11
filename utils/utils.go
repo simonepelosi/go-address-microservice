@@ -45,32 +45,23 @@ func GeocodeAddress(address string) (res models.MapsResult) {
 
 }
 
-func distance(lat1 float64, lng1 float64, lat2 float64, lng2 float64, unit ...string) float64 {
-	const PI float64 = 3.141592653589793
+func hsin(theta float64) float64 {
+	return math.Pow(math.Sin(theta/2), 2)
+}
 
-	radlat1 := float64(PI * lat1 / 180)
-	radlat2 := float64(PI * lat2 / 180)
+func Distance(lat1, lon1, lat2, lon2 float64) float64 {
+	// convert to radians
+	// must cast radius as float to multiply later
+	var la1, lo1, la2, lo2, r float64
+	la1 = lat1 * math.Pi / 180
+	lo1 = lon1 * math.Pi / 180
+	la2 = lat2 * math.Pi / 180
+	lo2 = lon2 * math.Pi / 180
 
-	theta := float64(lng1 - lng2)
-	radtheta := float64(PI * theta / 180)
+	r = 6378100 // Earth radius in METERS
 
-	dist := math.Sin(radlat1)*math.Sin(radlat2) + math.Cos(radlat1)*math.Cos(radlat2)*math.Cos(radtheta)
+	// calculate
+	h := hsin(la2-la1) + math.Cos(la1)*math.Cos(la2)*hsin(lo2-lo1)
 
-	if dist > 1 {
-		dist = 1
-	}
-
-	dist = math.Acos(dist)
-	dist = dist * 180 / PI
-	dist = dist * 60 * 1.1515
-
-	if len(unit) > 0 {
-		if unit[0] == "K" {
-			dist = dist * 1.609344
-		} else if unit[0] == "N" {
-			dist = dist * 0.8684
-		}
-	}
-
-	return dist
+	return 2 * r * math.Asin(math.Sqrt(h))
 }
