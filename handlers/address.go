@@ -3,7 +3,6 @@ package handlers
 import (
 	"go-address-microservice/models"
 
-	"log"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
@@ -13,15 +12,16 @@ import (
 func CheckAddresses(c echo.Context) (err error) {
 	wrappedAddresses := new(models.WrappedAddresses)
 	if err = c.Bind(wrappedAddresses); err != nil {
-		log.Fatalf("Failed reading the request body %s", err)
-		return echo.NewHTTPError(http.StatusInternalServerError, err.Error)
+		return echo.NewHTTPError(http.StatusInternalServerError, "Error reading response body!")
 	}
 
-	log.Printf("addresses  to check: %s", wrappedAddresses.AddressesList)
 	addresses := wrappedAddresses.Unwrap()
 
-	x, y, distance := addresses.CheckNearest()
+	x, y, distance, err := addresses.CheckNearest()
 
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, "Can't find two near points!")
+	}
 	response := models.NewResponse(x, y, distance)
 
 	return c.JSON(http.StatusOK, response)

@@ -40,7 +40,7 @@ type Address struct {
 	Lng  float64
 }
 
-func (addresses Addresses) CheckNearest() (Address, Address, float64) {
+func (addresses Addresses) CheckNearest() (Address, Address, float64, error) {
 	minDistance := math.Inf(+1)
 	var firstAddress Address
 	var secondAddress Address
@@ -58,7 +58,11 @@ func (addresses Addresses) CheckNearest() (Address, Address, float64) {
 
 	}
 
-	return firstAddress, secondAddress, minDistance
+	if minDistance == math.Inf(+1) {
+		err := fmt.Errorf("unable to find two near points")
+		return firstAddress, secondAddress, minDistance, err
+	}
+	return firstAddress, secondAddress, minDistance, nil
 }
 
 // Address utils
