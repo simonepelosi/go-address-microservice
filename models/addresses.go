@@ -76,7 +76,6 @@ func GeocodeAddress(address string) (MapsResult, error) {
 		log.Error(err)
 	}
 
-	// if you appending to existing query this works fine
 	params := req.URL.Query()
 	params.Add("address", address)
 	params.Add("key", "AIzaSyCPdQtZiqCo0mnK9cBSFwo8S3f9vGmNrUE")
