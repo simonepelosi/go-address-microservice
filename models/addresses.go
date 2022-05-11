@@ -14,16 +14,6 @@ type WrappedAddresses struct {
 	AddressesList []string `json:"addresses"`
 }
 
-type Addresses struct {
-	AddressesList []Address
-}
-
-type Address struct {
-	name string
-	lat  float64
-	lng  float64
-}
-
 func (wrapped WrappedAddresses) Unwrap() Addresses {
 	var addresses = Addresses{}
 	for _, value := range wrapped.AddressesList {
@@ -33,11 +23,42 @@ func (wrapped WrappedAddresses) Unwrap() Addresses {
 			continue
 		}
 
-		addresses.AddressesList = append(addresses.AddressesList, Address{name: value, lat: result.Results[0].Geometry.Location.Lat, lng: result.Results[0].Geometry.Location.Lng})
+		addresses.AddressesList = append(addresses.AddressesList, Address{Name: value, Lat: result.Results[0].Geometry.Location.Lat, Lng: result.Results[0].Geometry.Location.Lng})
 
 	}
 
 	return addresses
+}
+
+type Addresses struct {
+	AddressesList []Address
+}
+
+type Address struct {
+	Name string
+	Lat  float64
+	Lng  float64
+}
+
+func (addresses Addresses) CheckNearest() (Address, Address, float64) {
+	minDistance := math.Inf(+1)
+	var firstAddress Address
+	var secondAddress Address
+
+	for index_x, x := range addresses.AddressesList {
+		for _, y := range addresses.AddressesList[index_x+1:] {
+			computedDistance := Distance(x.Lat, x.Lng, y.Lat, y.Lng)
+			if computedDistance < minDistance {
+				firstAddress = x
+				secondAddress = y
+				minDistance = computedDistance
+			}
+
+		}
+
+	}
+
+	return firstAddress, secondAddress, minDistance
 }
 
 // Address utils

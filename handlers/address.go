@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"fmt"
 	"go-address-microservice/models"
 
 	"log"
@@ -21,6 +20,9 @@ func CheckAddresses(c echo.Context) (err error) {
 	log.Printf("addresses  to check: %s", wrappedAddresses.AddressesList)
 	addresses := wrappedAddresses.Unwrap()
 
-	fmt.Printf("%v", addresses)
-	return c.JSON(http.StatusOK, addresses)
+	x, y, distance := addresses.CheckNearest()
+
+	response := models.NewResponse(x, y, distance)
+
+	return c.JSON(http.StatusOK, response)
 }
