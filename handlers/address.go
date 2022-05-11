@@ -1,8 +1,9 @@
 package handlers
 
 import (
+	"fmt"
 	"go-address-microservice/models"
-	"go-address-microservice/utils"
+
 	"log"
 	"net/http"
 
@@ -11,15 +12,15 @@ import (
 
 // {addresses: [“Address A”, “Address B”, “Address C”, "Address D"]}
 func CheckAddresses(c echo.Context) (err error) {
-	addresses := new(models.Addresses)
-
-	if err = c.Bind(addresses); err != nil {
+	wrappedAddresses := new(models.WrappedAddresses)
+	if err = c.Bind(wrappedAddresses); err != nil {
 		log.Fatalf("Failed reading the request body %s", err)
 		return echo.NewHTTPError(http.StatusInternalServerError, err.Error)
 	}
 
-	log.Printf("addresses  to check: %s", addresses.AddressesList)
+	log.Printf("addresses  to check: %s", wrappedAddresses.AddressesList)
+	addresses := wrappedAddresses.Unwrap()
 
-	utils.GeocodeAddress(addresses.AddressesList[0])
+	fmt.Printf("%v", addresses)
 	return c.JSON(http.StatusOK, addresses)
 }
